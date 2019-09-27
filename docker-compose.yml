@@ -1,0 +1,56 @@
+#docker-compose.yml
+
+#Para solo crear la imagen:
+# $> docker-compose build
+
+#Para crear imagen e iniciar un nuevo contenedor: 
+# $> docker-compose up -d
+
+#Para reiniciar: 
+# $> docker-compose restart
+
+#Para remover imagen, contenedor, red interna y volumenes: 
+# $> docker-compose down
+
+#Para la creacion del contenedor se usara el nombre de la carpeta que contiene el "docker-compose.yml"
+version: '3.7' #Version de script docker-compose
+
+services:
+  webapp: #nombre que se le da por default al   
+    build:
+      context: .
+      dockerfile: Dockerfile-app-react #nombre que se de dara al dockerfile
+    image: app-react:1.0  #Nombre que llevara la imagen (nombre:version)  
+    ports:
+      - 3001:3001 #Redirecciono los puertos fisicos al contenedor (port_fisico:port_contenedor)
+    environment:
+      - TZ=America/Santiago #Para configirar la TimeZone de un contenedor, por defecto es UTC
+      - MI_VARIABLE="una frase muy larga con informacion"
+    volumes:
+      - .:/usr/src/app #Enlaza esta carpeta con el directorio principal del app    
+    container_name: app-react-container #nombre que llevara el contenedor creado
+    deploy:
+      restart_policy:
+        condition: on-failure
+  apirest: #nombre que se le da por default al   
+    build:
+      context: .
+      dockerfile: Dockerfile-api-rest-hapi #nombre que se de dara al dockerfile
+    image: api-rest-hapi:1.0  #Nombre que llevara la imagen (nombre:version)  
+    ports:
+      - 3000:3000 #Redirecciono los puertos fisicos al contenedor (port_fisico:port_contenedor)
+    environment:
+      - TZ=America/Santiago #Para configirar la TimeZone de un contenedor, por defecto es UTC
+      - MI_VARIABLE="una frase muy larga con informacion"
+    volumes:
+      - .:/usr/src/app #Enlaza esta carpeta con el directorio principal del app    
+    container_name: api-rest-hapi-container #nombre que llevara el contenedor creado
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  
+
+
+
+      

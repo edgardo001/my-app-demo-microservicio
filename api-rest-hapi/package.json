@@ -1,0 +1,14 @@
+{
+  "name": "api-rest-hapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "author": "edgardo vasquez",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^18.1.0"
+  }
+}
