@@ -1,8 +1,10 @@
 const Hapi = require('hapi');
 
+// Read the host address and the port from the environment
+const port = process.env.PORT || 3000;
+
 const server = Hapi.server({
-  port: 3000,
-  host: 'localhost',
+  port: port,
   routes: {
     cors: true
   },
