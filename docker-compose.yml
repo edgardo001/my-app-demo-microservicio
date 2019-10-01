@@ -9,25 +9,31 @@
 #Para reiniciar: 
 # $> docker-compose restart
 
-#Para remover imagen, contenedor, red interna y volumenes: 
+#Para remover contenedor, red interna y volumenes: 
 # $> docker-compose down
+#Para remover las imagenes creadas:
+# $> docker rmi -f api-rest-hapi:1.0 app-react:1.0
+
+#Ver salida de Docker-Compose:
+# $> docker-compose logs -f -t
+
+#Ver Docker-Compose en ejecución:
+# $> docker-compose ps
+
+#Ejecutar un comando en un conenedor de docker-compose:
+# $> docker-compose exec <nombre-servicio> /bin/bash
 
 #Para la creacion del contenedor se usara el nombre de la carpeta que contiene el "docker-compose.yml"
 version: '3.7' #Version de script docker-compose
 
 services:
-  webapp: #nombre que se le da por default al   
+  webapp: #nombre que se le da por default al contenedor  
     build:
       context: .
-      dockerfile: Dockerfile-app-react #nombre que se de dara al dockerfile
-    image: app-react:1.0  #Nombre que llevara la imagen (nombre:version)  
+      dockerfile: Dockerfile-app-react.dockerfile #nombre que se de dara al dockerfile
+    image: app-react:1.0  #Nombre que llevara la imagen (nombre:version) 
     ports:
-      - 3001:3001 #Redirecciono los puertos fisicos al contenedor (port_fisico:port_contenedor)
-    environment:
-      - TZ=America/Santiago #Para configirar la TimeZone de un contenedor, por defecto es UTC
-      - MI_VARIABLE="una frase muy larga con informacion"
-    volumes:
-      - .:/usr/src/app #Enlaza esta carpeta con el directorio principal del app    
+      - 5000:5000 #Redirecciono los puertos fisicos al contenedor (port_fisico:port_contenedor)  
     container_name: app-react-container #nombre que llevara el contenedor creado
     deploy:
       restart_policy:
@@ -35,22 +41,14 @@ services:
   apirest: #nombre que se le da por default al   
     build:
       context: .
-      dockerfile: Dockerfile-api-rest-hapi #nombre que se de dara al dockerfile
-    image: api-rest-hapi:1.0  #Nombre que llevara la imagen (nombre:version)  
+      dockerfile: Dockerfile-api-rest-hapi.dockerfile #nombre que se de dara al dockerfile 
+    image: api-rest-hapi:1.0  #Nombre que llevara la imagen (nombre:version)
     ports:
       - 3000:3000 #Redirecciono los puertos fisicos al contenedor (port_fisico:port_contenedor)
     environment:
-      - TZ=America/Santiago #Para configirar la TimeZone de un contenedor, por defecto es UTC
-      - MI_VARIABLE="una frase muy larga con informacion"
-    volumes:
-      - .:/usr/src/app #Enlaza esta carpeta con el directorio principal del app    
+      - PORT=3000
     container_name: api-rest-hapi-container #nombre que llevara el contenedor creado
     deploy:
       restart_policy:
         condition: on-failure
-
-  
-
-
-
       
